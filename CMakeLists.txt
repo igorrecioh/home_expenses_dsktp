@@ -17,14 +17,12 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        editgasto.h
-        editgasto.cpp
-        editgasto.ui
-        dbmanager.cpp
-        dbmanager.h
+        mainwindow.cpp mainwindow.h mainwindow.ui
+        editgasto.h editgasto.cpp editgasto.ui
+        dbmanager.cpp dbmanager.h
+        gastomodel.h gastomodel.cpp
+        configmodel.h configmodel.cpp
+        editconfig.h editconfig.cpp editconfig.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

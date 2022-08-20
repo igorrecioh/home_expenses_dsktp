@@ -145,6 +145,138 @@ background-color: rgb(186, 189, 182);</string>
     <string>CANCELAR</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="cancelEditBtn_2">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>230</y>
+     <width>151</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 700 10pt &quot;Ubuntu&quot;;
+background-color: rgb(186, 189, 182);</string>
+   </property>
+   <property name="text">
+    <string>CANCELAR</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="updateGastoBtn_2">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>230</y>
+     <width>151</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(252, 175, 62);
+font: 700 10pt &quot;Ubuntu&quot;;</string>
+   </property>
+   <property name="text">
+    <string>EDITAR GASTO</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>150</y>
+     <width>601</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>COSTE</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QDateEdit" name="dateEdit_2">
+      <property name="locale">
+       <locale language="Spanish" country="Spain"/>
+      </property>
+      <property name="displayFormat">
+       <string>d/M/yyyy</string>
+      </property>
+      <property name="timeSpec">
+       <enum>Qt::UTC</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QComboBox" name="comboBox_2"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TIPO</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+      <property name="maximum">
+       <double>999999.989999999990687</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>FECHA</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="label_8">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>DESCRIPCIÓN</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="lineEdit_2"/>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>

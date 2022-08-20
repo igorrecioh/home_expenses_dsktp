@@ -11,6 +11,8 @@
 #include <QJsonArray>
 #include "dbmanager.h"
 #include "editgasto.h"
+#include "editconfig.h"
+#include "gastomodel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
     time_t tt = std::chrono::system_clock::to_time_t(now);
     tm local_tm = *localtime(&tt);
     ui->dateEdit->setDate(QDate(local_tm.tm_year + 1900, local_tm.tm_mon + 1, local_tm.tm_mday));
+    ui->fromDate->setDate(QDate(local_tm.tm_year + 1900, local_tm.tm_mon + 1, local_tm.tm_mday));
+    ui->toDate->setDate(QDate(local_tm.tm_year + 1900, local_tm.tm_mon + 1, local_tm.tm_mday));
 
     // Creamos el modelo de gastos para la tabla
     gastosModel = new GastoModel(this);
@@ -61,6 +65,13 @@ MainWindow::MainWindow(QWidget *parent)
     QStandardItem *item = model->item(0);
     item->setEnabled(false);
     ui->filterByCbx->show();
+
+    // Preparacion pestaña config
+    configModel = new ConfigModel(this);
+    configModel->populateData(configKeys, configValues);
+    ui->configTable->setModel(configModel);
+    ui->configTable->horizontalHeader()->setVisible(true);
+    ui->configTable->show();
 
     // La app comienza con datos actualizados de la DB
     on_refreshBtn_clicked();
@@ -96,14 +107,20 @@ void MainWindow::getParams()
 
     // Ejemplo para clave valor sencillo
     dbPath = jsonObj.value("DB_PATH").toString();
+    configKeys.append("DB_PATH");
+    configValues.append(dbPath);
     qDebug() << dbPath;
 
     // Ejemplo para clave valor con Array
     QJsonArray jsonArr = jsonObj.value("TYPES").toArray();
+    int typeIdx = 0;
     for (QJsonValue item : jsonArr)
     {
         tiposJson.append(item.toString());
+        configKeys.append("TYPE_" + QString::number(typeIdx));
+        configValues.append(item.toString());
         qDebug() << item.toString();
+        typeIdx++;
     }
 }
 
@@ -112,6 +129,7 @@ void MainWindow::populateComboTipo()
     for(QString item : tiposJson)
     {
         ui->comboBox->addItem(item);
+        ui->tipoCbx->addItem(item);
     }
 }
 
@@ -140,77 +158,6 @@ void MainWindow::on_exitBtn_clicked()
 {
     this->close();
 }
-
-// Modelo de gastos para la tabla
-GastoModel::GastoModel(QObject *parent) : QAbstractTableModel(parent)
-{
-}
-
-// Método para rellenar la tabla
-void GastoModel::populateData(const QList<int> &id, const QList<QString> &fecha, const QList<float> &precio, const QList<QString> &tipo, const QList<QString> &desc)
-{
-    ids.clear();
-    fechas.clear();
-    precios.clear();
-    tipos.clear();
-    descripciones.clear();
-    ids = id;
-    fechas = fecha;
-    precios = precio;
-    tipos = tipo;
-    descripciones = desc;
-    return;
-}
-
-int GastoModel::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return fechas.length();
-}
-
-int GastoModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return 5;
-}
-
-QVariant GastoModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid() || role != Qt::DisplayRole) {
-        return QVariant();
-    }
-    if (index.column() == 0) {
-        return ids[index.row()];
-    } else if (index.column() == 1) {
-        return fechas[index.row()];
-    } else if (index.column() == 2) {
-        return precios[index.row()];
-    } else if (index.column() == 3) {
-        return tipos[index.row()];
-    } else if (index.column() == 4) {
-        return descripciones[index.row()];
-    }
-    return QVariant();
-}
-
-QVariant GastoModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
-        if (section == 0) {
-            return QString("ID");
-        } else if (section == 1) {
-            return QString("Fecha");
-        } else if (section == 2) {
-            return QString("Precio");
-        } else if (section == 3) {
-            return QString("Tipo");
-        } else if (section == 4) {
-            return QString("Descripción");
-        }
-    }
-    return QVariant();
-}
-
 
 void MainWindow::on_deleteBtn_clicked()
 {
@@ -335,3 +282,23 @@ void MainWindow::on_editBtn_clicked()
         }
     }
 }
+
+void MainWindow::on_editConfigBtn_clicked()
+{
+    int index = ui->configTable->selectionModel()->currentIndex().row();
+
+    if(index < 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Seleccione una configuración para modificar");
+        msgBox.exec();
+    }
+    else
+    {
+        EditConfig *editConfig = new EditConfig(this);
+        editConfig->SetKeyValue(configModel->index(index, 0).data().toString(), configModel->index(index, 1).data().toString());
+        if(editConfig->exec() == 0){
+        }
+    }
+}
+

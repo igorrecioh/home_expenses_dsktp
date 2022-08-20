@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="addGastoTab">
      <attribute name="title">
@@ -370,21 +370,6 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
          <property name="enabled">
           <bool>false</bool>
          </property>
-         <item>
-          <property name="text">
-           <string>Hipoteca</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Comunidad</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Garaje</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="0" column="0">
@@ -403,6 +388,55 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
         </widget>
        </item>
       </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Configuración</string>
+     </attribute>
+     <widget class="QTableView" name="configTable">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>351</width>
+        <height>192</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="editConfigBtn">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>80</y>
+        <width>151</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(252, 175, 62);
+font: 700 10pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>EDITAR VALOR</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveTypeBtn">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>10</y>
+        <width>151</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(115, 210, 22);
+font: 700 10pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>AÑADIR TIPO</string>
+      </property>
      </widget>
     </widget>
    </widget>
