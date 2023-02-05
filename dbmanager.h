@@ -9,19 +9,20 @@ class DbManager
 {
 public:
     DbManager(const QString& path);
-    bool addGasto(const QString& fecha, const QString& tipo, float coste, const QString& desc);
+    bool addGasto(const QString& fecha, const QString& tipo, float coste, const QString& desc, const QString& persona);
     bool deleteAll();
     bool GetAllDataFromTable();
     bool deleteGastoById(int id);
     bool getDataByTipo(const QString& tipo);
     bool getDataBetweenDates(const QString& fromFecha, const QString& toFecha);
-    bool updateDataById(QString& id, const QString& fecha, const QString& tipo, float coste, const QString& desc);
+    bool updateDataById(QString& id, const QString& fecha, const QString& tipo, float coste, const QString& desc, const QString& persona);
 
     QList<int> gastoIds;
     QList<QString> gastoFechas;
     QList<float> gastoPrecios;
     QList<QString> gastoTipos;
     QList<QString> gastoDescripciones;
+    QList<QString> gastoPersonas;
 
 private:
     QSqlDatabase m_db;

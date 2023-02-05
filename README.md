@@ -23,7 +23,8 @@ CREATE TABLE "gastosTable" (
 	"fecha"	DATE,
 	"tipo"	TEXT,
 	"coste"	REAL,
-	"descripcion"	TEXT
+	"descripcion"	TEXT,
+    "persona"   TEXT      
 )
 
 .quit

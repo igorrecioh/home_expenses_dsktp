@@ -16,15 +16,16 @@ DbManager::DbManager(const QString& path)
     }
 }
 
-bool DbManager::addGasto(const QString& fecha, const QString& tipo, float coste, const QString& desc)
+bool DbManager::addGasto(const QString& fecha, const QString& tipo, float coste, const QString& desc, const QString& persona)
 {
    bool success = false;
    QSqlQuery query;
-   query.prepare("INSERT INTO gastosTable (fecha, tipo, coste, descripcion) VALUES (:fecha, :tipo, :coste, :descripcion)");
+   query.prepare("INSERT INTO gastosTable (fecha, tipo, coste, descripcion, persona) VALUES (:fecha, :tipo, :coste, :descripcion, :persona)");
    query.bindValue(":fecha", fecha);
    query.bindValue(":tipo", tipo);
    query.bindValue(":coste", coste);
    query.bindValue(":descripcion", desc);
+   query.bindValue(":persona", persona);
    if(query.exec())
    {
        success = true;
@@ -68,11 +69,13 @@ bool DbManager::GetAllDataFromTable()
         gastoTipos.clear();
         gastoPrecios.clear();
         gastoDescripciones.clear();
+        gastoPersonas.clear();
         int id = query.record().indexOf("id");
         int fecha = query.record().indexOf("fecha");
         int tipo = query.record().indexOf("tipo");
         int coste = query.record().indexOf("coste");
         int descripcion = query.record().indexOf("descripcion");
+        int persona = query.record().indexOf("persona");
         while(query.next())
         {
             gastoIds.append(query.value(id).toInt());
@@ -80,6 +83,7 @@ bool DbManager::GetAllDataFromTable()
             gastoTipos.append(query.value(tipo).toString());
             gastoPrecios.append(query.value(coste).toFloat());
             gastoDescripciones.append(query.value(descripcion).toString());
+            gastoPersonas.append(query.value(persona).toString());
         }
         success = true;
     }
@@ -110,6 +114,7 @@ bool DbManager::getDataByTipo(const QString& tipo)
         int tipo = query.record().indexOf("tipo");
         int coste = query.record().indexOf("coste");
         int descripcion = query.record().indexOf("descripcion");
+        int persona = query.record().indexOf("persona");
         while(query.next())
         {
             gastoIds.append(query.value(id).toInt());
@@ -117,6 +122,7 @@ bool DbManager::getDataByTipo(const QString& tipo)
             gastoTipos.append(query.value(tipo).toString());
             gastoPrecios.append(query.value(coste).toFloat());
             gastoDescripciones.append(query.value(descripcion).toString());
+            gastoPersonas.append(query.value(persona).toString());
         }
     }
     else
@@ -146,6 +152,7 @@ bool DbManager::getDataBetweenDates(const QString& fromFecha, const QString& toF
         int tipo = query.record().indexOf("tipo");
         int coste = query.record().indexOf("coste");
         int descripcion = query.record().indexOf("descripcion");
+        int persona = query.record().indexOf("persona");
         while(query.next())
         {
             gastoIds.append(query.value(id).toInt());
@@ -153,6 +160,7 @@ bool DbManager::getDataBetweenDates(const QString& fromFecha, const QString& toF
             gastoTipos.append(query.value(tipo).toString());
             gastoPrecios.append(query.value(coste).toFloat());
             gastoDescripciones.append(query.value(descripcion).toString());
+            gastoPersonas.append(query.value(persona).toString());
         }
     }
     else
@@ -181,16 +189,17 @@ bool DbManager::deleteGastoById(int id)
     return success;
 }
 
-bool DbManager::updateDataById(QString& id, const QString& fecha, const QString& tipo, float coste, const QString& desc)
+bool DbManager::updateDataById(QString& id, const QString& fecha, const QString& tipo, float coste, const QString& desc, const QString& persona)
 {
     bool success = false;
     QSqlQuery query;
-    query.prepare("UPDATE gastosTable SET fecha = :fecha, tipo = :tipo, coste = :coste, descripcion = :desc WHERE id = :id");
+    query.prepare("UPDATE gastosTable SET fecha = :fecha, tipo = :tipo, coste = :coste, descripcion = :desc, persona = :persona WHERE id = :id");
     query.bindValue(":id", id);
     query.bindValue(":fecha", fecha);
     query.bindValue(":tipo", tipo);
     query.bindValue(":coste", coste);
     query.bindValue(":desc", desc);
+    query.bindValue(":persona", persona);
 
     if(query.exec())
     {
@@ -204,7 +213,8 @@ bool DbManager::updateDataById(QString& id, const QString& fecha, const QString&
                   << tipo << "\n"
                   << coste << "\n"
                   << desc << "\n"
-                  << id;
+                  << id << "\n"
+                  << persona;
     }
 
     return success;

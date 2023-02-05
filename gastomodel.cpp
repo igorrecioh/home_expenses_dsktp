@@ -7,18 +7,20 @@ GastoModel::GastoModel(QObject *parent) : QAbstractTableModel(parent)
 }
 
 // Método para rellenar la tabla
-void GastoModel::populateData(const QList<int> &id, const QList<QString> &fecha, const QList<float> &precio, const QList<QString> &tipo, const QList<QString> &desc)
+void GastoModel::populateData(const QList<int> &id, const QList<QString> &fecha, const QList<float> &precio, const QList<QString> &tipo, const QList<QString> &desc, const QList<QString> &persona)
 {
     ids.clear();
     fechas.clear();
     precios.clear();
     tipos.clear();
     descripciones.clear();
+    personas.clear();
     ids = id;
     fechas = fecha;
     precios = precio;
     tipos = tipo;
     descripciones = desc;
+    personas = persona;
     return;
 }
 
@@ -31,7 +33,7 @@ int GastoModel::rowCount(const QModelIndex &parent) const
 int GastoModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 5;
+    return 6;
 }
 
 QVariant GastoModel::data(const QModelIndex &index, int role) const
@@ -49,6 +51,8 @@ QVariant GastoModel::data(const QModelIndex &index, int role) const
         return tipos[index.row()];
     } else if (index.column() == 4) {
         return descripciones[index.row()];
+    } else if (index.column() == 5) {
+        return personas[index.row()];
     }
     return QVariant();
 }
@@ -66,6 +70,8 @@ QVariant GastoModel::headerData(int section, Qt::Orientation orientation, int ro
             return QString("Tipo");
         } else if (section == 4) {
             return QString("Descripción");
+        } else if (section == 5) {
+            return QString("Persona");
         }
     }
     return QVariant();

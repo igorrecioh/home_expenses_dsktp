@@ -15,7 +15,7 @@ class EditGasto : public QDialog
 
 public:
     explicit EditGasto(QWidget *parent = nullptr, DbManager *dbcon = nullptr);
-    void setValuesInPopup(const QString& id, const QDate& fecha, const QString& tipo, float coste, const QString& desc);
+    void setValuesInPopup(const QString& id, const QDate& fecha, const QString& tipo, float coste, const QString& desc, const QString& nombre);
     void populateComboTipo(QList<QString> tiposJson);
     ~EditGasto();
 

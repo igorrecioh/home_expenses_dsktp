@@ -39,6 +39,8 @@ private slots:
 
     void on_editConfigBtn_clicked();
 
+    void on_deleteCurrentConfigBtn_clicked();
+
 public slots:
     void on_refreshBtn_clicked();
 
@@ -49,6 +51,7 @@ private:
     QList<float> gastoPrecios;
     QList<QString> gastoTipos;
     QList<QString> gastoDescripciones;
+    QList<QString> gastoPersonas;
     QList<QString> configKeys;
     QList<QString> configValues;
     DbManager *dbcon;

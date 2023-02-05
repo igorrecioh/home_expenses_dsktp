@@ -15,7 +15,7 @@ EditGasto::~EditGasto()
     delete ui;
 }
 
-void EditGasto::setValuesInPopup(const QString& id, const QDate& fecha, const QString& tipo, float coste, const QString& desc)
+void EditGasto::setValuesInPopup(const QString& id, const QDate& fecha, const QString& tipo, float coste, const QString& desc, const QString& nombre)
 {
     m_id = id;
     ui->dateEdit->setDate(fecha);
@@ -23,6 +23,7 @@ void EditGasto::setValuesInPopup(const QString& id, const QDate& fecha, const QS
     int index = ui->comboBox->findText(tipo);
     ui->comboBox->setCurrentIndex(index);
     ui->lineEdit->setText(desc);
+    ui->lineEdit_nombre->setText(nombre);
 }
 
 void EditGasto::on_updateGastoBtn_clicked()
@@ -31,7 +32,8 @@ void EditGasto::on_updateGastoBtn_clicked()
     ui->comboBox->currentText();
     ui->doubleSpinBox->value();
     ui->lineEdit->text();
-    m_dbcon.updateDataById(m_id, ui->dateEdit->date().toString("yyyy-MM-dd"), ui->comboBox->currentText(), ui->doubleSpinBox->value(), ui->lineEdit->text());
+    ui->lineEdit_nombre->text();
+    m_dbcon.updateDataById(m_id, ui->dateEdit->date().toString("yyyy-MM-dd"), ui->comboBox->currentText(), ui->doubleSpinBox->value(), ui->lineEdit->text(), ui->lineEdit_nombre->text());
     this->close();
     this->setResult(0);
 }

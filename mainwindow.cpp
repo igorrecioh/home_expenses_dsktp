@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     gastosModel = new GastoModel(this);
 
     // Populate model with data:
-    gastosModel->populateData(gastoIds, gastoFechas, gastoPrecios, gastoTipos, gastoDescripciones);
+    gastosModel->populateData(gastoIds, gastoFechas, gastoPrecios, gastoTipos, gastoDescripciones, gastoPersonas);
 
     // Conectamos el modelo con las tablas (añadir y filtrar)
     ui->tableView->setModel(gastosModel);
@@ -140,15 +140,18 @@ void MainWindow::on_saveBtn_clicked()
     std::cout << "Price: " << ui->doubleSpinBox->value() << std::endl;
     std::cout << "Type: " << ui->comboBox->currentText().toStdString() << std::endl;
     std::cout << "Description: " << ui->lineEdit->text().toStdString() << std::endl;
+    std::cout << "Name: " << ui->lineEdit_nombre->text().toStdString() << std::endl;
 
     dbcon->addGasto(ui->dateEdit->date().toString("yyyy-MM-dd"),
                   ui->comboBox->currentText(),
                   ui->doubleSpinBox->value(),
-                  ui->lineEdit->text());
+                  ui->lineEdit->text(),
+                  ui->lineEdit_nombre->text());
 
     // Borrado tras guardado
     ui->doubleSpinBox->setValue(0.00);
     ui->lineEdit->setText("");
+    ui->lineEdit_nombre->setText("");
 
     on_refreshBtn_clicked();
 }
@@ -167,8 +170,9 @@ void MainWindow::on_deleteBtn_clicked()
     gastoPrecios.clear();
     gastoTipos.clear();
     gastoDescripciones.clear();
+    gastoPersonas.clear();
 
-    gastosModel->populateData(gastoIds, gastoFechas,gastoPrecios, gastoTipos, gastoDescripciones);
+    gastosModel->populateData(gastoIds, gastoFechas,gastoPrecios, gastoTipos, gastoDescripciones, gastoPersonas);
 
     ui->tableView->setModel(gastosModel);
     ui->tableView->horizontalHeader()->setVisible(true);
@@ -181,7 +185,7 @@ void MainWindow::on_refreshBtn_clicked()
     dbcon->GetAllDataFromTable();
 
     gastosModel = new GastoModel(this);
-    gastosModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones);
+    gastosModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones, dbcon->gastoPersonas);
 
     ui->tableView->setModel(gastosModel);
     ui->tableView->horizontalHeader()->setVisible(true);
@@ -192,7 +196,7 @@ void MainWindow::on_refreshBtn_clicked()
 void MainWindow::on_deleteCurrentBtn_clicked()
 {
 
-    gastosModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones);
+    gastosModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones, dbcon->gastoPersonas);
 
     int index = ui->tableView->selectionModel()->currentIndex().row();
 
@@ -234,7 +238,7 @@ void MainWindow::on_buscarBtn_clicked()
 
     GastoModel *gastosFilterModel = new GastoModel(this);
 
-    gastosFilterModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones);
+    gastosFilterModel->populateData(dbcon->gastoIds, dbcon->gastoFechas, dbcon->gastoPrecios, dbcon->gastoTipos, dbcon->gastoDescripciones, dbcon->gastoPersonas);
 
     ui->tableViewFilter->setModel(gastosFilterModel);
     ui->tableViewFilter->horizontalHeader()->setVisible(true);
@@ -274,7 +278,8 @@ void MainWindow::on_editBtn_clicked()
                                     gastosModel->index(index, 1).data().toDate(),
                                     gastosModel->index(index, 3).data().toString(),
                                     gastosModel->index(index, 2).data().toFloat(),
-                                    gastosModel->index(index, 4).data().toString());
+                                    gastosModel->index(index, 4).data().toString(),
+                                    gastosModel->index(index, 5).data().toString());
 
         // SOURCE: How to trigger a method after closing a dialog box
         if(editGasto->exec() == 0){
@@ -300,5 +305,11 @@ void MainWindow::on_editConfigBtn_clicked()
         if(editConfig->exec() == 0){
         }
     }
+}
+
+
+void MainWindow::on_deleteCurrentConfigBtn_clicked()
+{
+
 }
 
