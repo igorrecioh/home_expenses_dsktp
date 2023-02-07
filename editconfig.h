@@ -2,7 +2,6 @@
 #define EDITCONFIG_H
 
 #include <QDialog>
-#include "mainwindow.h"
 
 namespace Ui {
 class EditConfig;

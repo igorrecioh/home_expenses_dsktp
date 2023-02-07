@@ -1,5 +1,4 @@
 #include "editconfig.h"
-#include "mainwindow.h"
 #include "ui_editconfig.h"
 
 EditConfig::EditConfig(QWidget *parent) :

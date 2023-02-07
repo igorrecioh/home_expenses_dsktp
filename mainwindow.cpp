@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "dbmanager.h"
+#include "addconfig.h"
 #include "editgasto.h"
 #include "editconfig.h"
 #include "gastomodel.h"
@@ -18,11 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , dbcon() // Esto debería ir en un fichero de configuración
+    , settings("IgorRecio", "gastosApp")
 {
     ui->setupUi(this);
 
     // Abrir JSON
-    openJson("/home/igorrecioh/gastos/gastos.json");
+    openJson("/home/igorrecio/gitrepos/home_expenses_dsktp/gastos.json");
+    settings.setValue("DB_PATH", "/home/igorrecio/gitrepos/home_expenses_dsktp/gastosDatabase.db");
 
     // Recuperar parametros
     getParams();
@@ -106,9 +109,12 @@ void MainWindow::getParams()
     QJsonObject jsonObj = document.object();
 
     // Ejemplo para clave valor sencillo
-    dbPath = jsonObj.value("DB_PATH").toString();
-    configKeys.append("DB_PATH");
-    configValues.append(dbPath);
+    // dbPath = jsonObj.value("DB_PATH").toString();
+    // configKeys.append("DB_PATH");
+    // configValues.append(dbPath);
+    //qDebug() << dbPath;
+
+    dbPath = settings.value("DB_PATH").toString();
     qDebug() << dbPath;
 
     // Ejemplo para clave valor con Array
@@ -135,25 +141,42 @@ void MainWindow::populateComboTipo()
 
 void MainWindow::on_saveBtn_clicked()
 {
-    std::cout << "Save button pressed" << std::endl;
-    std::cout << "Date: " << ui->dateEdit->date().toString("dd/MM/yyyy").toStdString() << std::endl;
-    std::cout << "Price: " << ui->doubleSpinBox->value() << std::endl;
-    std::cout << "Type: " << ui->comboBox->currentText().toStdString() << std::endl;
-    std::cout << "Description: " << ui->lineEdit->text().toStdString() << std::endl;
-    std::cout << "Name: " << ui->lineEdit_nombre->text().toStdString() << std::endl;
+    if(ui->lineEdit_nombre->text().toStdString().length() == 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Introduzca la persona asociada al gasto");
+        msgBox.exec();
+    }
+    else if(ui->doubleSpinBox->value() == 0 )
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Introduzca el coste asociado al gasto");
+        msgBox.exec();
+    }
+    else
+    {
+        std::cout << "Save button pressed" << std::endl;
+        std::cout << "Date: " << ui->dateEdit->date().toString("dd/MM/yyyy").toStdString() << std::endl;
+        std::cout << "Price: " << ui->doubleSpinBox->value() << std::endl;
+        std::cout << "Type: " << ui->comboBox->currentText().toStdString() << std::endl;
+        std::cout << "Description: " << ui->lineEdit->text().toStdString() << std::endl;
+        std::cout << "Name: " << ui->lineEdit_nombre->text().toStdString() << std::endl;
 
-    dbcon->addGasto(ui->dateEdit->date().toString("yyyy-MM-dd"),
-                  ui->comboBox->currentText(),
-                  ui->doubleSpinBox->value(),
-                  ui->lineEdit->text(),
-                  ui->lineEdit_nombre->text());
+        dbcon->addGasto(ui->dateEdit->date().toString("yyyy-MM-dd"),
+                      ui->comboBox->currentText(),
+                      ui->doubleSpinBox->value(),
+                      ui->lineEdit->text(),
+                      ui->lineEdit_nombre->text());
 
-    // Borrado tras guardado
-    ui->doubleSpinBox->setValue(0.00);
-    ui->lineEdit->setText("");
-    ui->lineEdit_nombre->setText("");
+        // Borrado tras guardado
+        ui->doubleSpinBox->setValue(0.00);
+        ui->lineEdit->setText("");
+        ui->lineEdit_nombre->setText("");
 
-    on_refreshBtn_clicked();
+        on_refreshBtn_clicked();
+    }
 }
 
 
@@ -310,6 +333,14 @@ void MainWindow::on_editConfigBtn_clicked()
 
 void MainWindow::on_deleteCurrentConfigBtn_clicked()
 {
+
+}
+
+
+void MainWindow::on_saveTypeBtn_clicked()
+{
+    AddConfig *addConfig = new AddConfig(this);
+    if(addConfig->exec() == 0){}
 
 }
 

@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         gastomodel.h gastomodel.cpp
         configmodel.h configmodel.cpp
         editconfig.h editconfig.cpp editconfig.ui
+        addconfig.h addconfig.cpp addconfig.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="addGastoTab">
      <attribute name="title">
@@ -316,7 +316,7 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
        <rect>
         <x>170</x>
         <y>10</y>
-        <width>302</width>
+        <width>314</width>
         <height>61</height>
        </rect>
       </property>
@@ -483,7 +483,7 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
      <x>0</x>
      <y>0</y>
      <width>898</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

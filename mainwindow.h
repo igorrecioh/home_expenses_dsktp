@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSettings>
 #include "gastomodel.h"
 #include "configmodel.h"
 #include "dbmanager.h"
@@ -41,6 +42,8 @@ private slots:
 
     void on_deleteCurrentConfigBtn_clicked();
 
+    void on_saveTypeBtn_clicked();
+
 public slots:
     void on_refreshBtn_clicked();
 
@@ -60,6 +63,7 @@ private:
     QByteArray jsonBytes;
     QList<QString> tiposJson;
     QString dbPath;
+    QSettings settings;
 
     void openJson(QString path);
     void getParams();
