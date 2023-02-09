@@ -8,7 +8,7 @@ class ConfigModel : public QAbstractTableModel
 public:
     ConfigModel(QObject *parent = 0);
 
-    void populateData(const QList<QString> &configKey, const QList<QString> &configValue);
+    void populateData(const QList<QString> &configType);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -17,8 +17,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
 private:
-    QList<QString> configKeys;
-    QList<QString> configValues;
+    QList<QString> configTypes;
 };
 
 #endif // CONFIGMODEL_H

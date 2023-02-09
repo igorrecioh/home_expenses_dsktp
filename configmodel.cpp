@@ -7,25 +7,23 @@ ConfigModel::ConfigModel(QObject *parent) : QAbstractTableModel(parent)
 }
 
 // Método para rellenar la tabla
-void ConfigModel::populateData(const QList<QString> &configKey, const QList<QString> &configValue)
+void ConfigModel::populateData(const QList<QString> &configType)
 {
-    configKeys.clear();
-    configValues.clear();
-    configKeys = configKey;
-    configValues = configValue;
+    configTypes.clear();
+    configTypes = configType;
     return;
 }
 
 int ConfigModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return configKeys.length();
+    return configTypes.length();
 }
 
 int ConfigModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 2;
+    return 1;
 }
 
 QVariant ConfigModel::data(const QModelIndex &index, int role) const
@@ -34,9 +32,7 @@ QVariant ConfigModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     if (index.column() == 0) {
-        return configKeys[index.row()];
-    } else if (index.column() == 1) {
-        return configValues[index.row()];
+        return configTypes[index.row()];
     }
     return QVariant();
 }
@@ -45,9 +41,7 @@ QVariant ConfigModel::headerData(int section, Qt::Orientation orientation, int r
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         if (section == 0) {
-            return QString("Clave");
-        } else if (section == 1) {
-            return QString("Valor");
+            return QString("Tipo de gasto");
         }
     }
     return QVariant();

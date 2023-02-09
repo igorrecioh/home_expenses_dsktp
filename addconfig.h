@@ -2,6 +2,7 @@
 #define ADDCONFIG_H
 
 #include <QDialog>
+#include <QSettings>
 
 namespace Ui {
 class AddConfig;
@@ -12,14 +13,17 @@ class AddConfig : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddConfig(QWidget *parent = nullptr);
+    AddConfig(QWidget *parent = nullptr);
     ~AddConfig();
 
 private slots:
     void on_cancelConfigAddBtn_clicked();
 
+    void on_updateConfigBtn_clicked();
+
 private:
     Ui::AddConfig *ui;
+    QSettings _settings;
 };
 
 #endif // ADDCONFIG_H

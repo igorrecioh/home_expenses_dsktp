@@ -44,6 +44,8 @@ private slots:
 
     void on_saveTypeBtn_clicked();
 
+    void on_comboBox_activated(int index);
+
 public slots:
     void on_refreshBtn_clicked();
 
@@ -55,13 +57,11 @@ private:
     QList<QString> gastoTipos;
     QList<QString> gastoDescripciones;
     QList<QString> gastoPersonas;
-    QList<QString> configKeys;
-    QList<QString> configValues;
+    QList<QString> configTypes;
     DbManager *dbcon;
     GastoModel *gastosModel;
     ConfigModel *configModel;
     QByteArray jsonBytes;
-    QList<QString> tiposJson;
     QString dbPath;
     QSettings settings;
 

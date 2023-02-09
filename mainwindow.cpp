@@ -6,9 +6,6 @@
 #include <QMessageBox>
 #include <QIODevice>
 #include <QFile>
-#include <QJsonParseError>
-#include <QJsonObject>
-#include <QJsonArray>
 #include "dbmanager.h"
 #include "addconfig.h"
 #include "editgasto.h"
@@ -18,23 +15,28 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , dbcon() // Esto debería ir en un fichero de configuración
+    , dbcon()
     , settings("IgorRecio", "gastosApp")
 {
     ui->setupUi(this);
 
-    // Abrir JSON
-    openJson("/home/igorrecio/gitrepos/home_expenses_dsktp/gastos.json");
-    settings.setValue("DB_PATH", "/home/igorrecio/gitrepos/home_expenses_dsktp/gastosDatabase.db");
+    // settings.setValue("DB_PATH", "/home/igorrecio/gitrepos/home_expenses_dsktp/gastosDatabase.db");
+
+    /*
+    QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+    for (QString type : data2) {
+        qDebug() << type;
+    };
+    */
 
     // Recuperar parametros
     getParams();
 
-    // Conexion DB
-    dbcon = new DbManager(dbPath);
-
     // Añadir items de tipo
     populateComboTipo();
+
+    // Conexion DB
+    dbcon = new DbManager(dbPath);
 
     // Obtenemos la fecha actual
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
@@ -71,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Preparacion pestaña config
     configModel = new ConfigModel(this);
-    configModel->populateData(configKeys, configValues);
+    configModel->populateData(configTypes);
     ui->configTable->setModel(configModel);
     ui->configTable->horizontalHeader()->setVisible(true);
     ui->configTable->show();
@@ -85,58 +87,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openJson(QString path)
-{
-    // Apertura y lectura JSON
-    QFile file(path);
-    QByteArray bytes;
-    if(file.open(QIODevice::ReadOnly)){
-        bytes = file.readAll();
-        file.close();
-    }
-    this->jsonBytes = bytes;
-}
-
 void MainWindow::getParams()
 {
-    QJsonParseError jsonError;
-    QJsonDocument document = QJsonDocument::fromJson( this->jsonBytes, &jsonError );
-    if( jsonError.error != QJsonParseError::NoError )
-    {
-        std::cout << "fromJson failed: " << jsonError.errorString().toStdString() << std::endl;
-        return ;
-    }
-    QJsonObject jsonObj = document.object();
-
-    // Ejemplo para clave valor sencillo
-    // dbPath = jsonObj.value("DB_PATH").toString();
-    // configKeys.append("DB_PATH");
-    // configValues.append(dbPath);
-    //qDebug() << dbPath;
-
     dbPath = settings.value("DB_PATH").toString();
     qDebug() << dbPath;
 
-    // Ejemplo para clave valor con Array
-    QJsonArray jsonArr = jsonObj.value("TYPES").toArray();
-    int typeIdx = 0;
-    for (QJsonValue item : jsonArr)
-    {
-        tiposJson.append(item.toString());
-        configKeys.append("TYPE_" + QString::number(typeIdx));
-        configValues.append(item.toString());
-        qDebug() << item.toString();
-        typeIdx++;
-    }
+    QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+    for (QString type : data2) {
+        configTypes.append(type);
+        qDebug() << type;
+    };
 }
 
 void MainWindow::populateComboTipo()
 {
-    for(QString item : tiposJson)
-    {
-        ui->comboBox->addItem(item);
-        ui->tipoCbx->addItem(item);
-    }
+    ui->comboBox->clear();
+    ui->tipoCbx->clear();
+    ui->comboBox->addItems(configTypes);
+    ui->tipoCbx->addItems(configTypes);
+    ui->comboBox->setCurrentIndex(0);
+    ui->tipoCbx->setCurrentIndex(0);
+    ui->comboBox->show();
+    ui->tipoCbx->show();
 }
 
 void MainWindow::on_saveBtn_clicked()
@@ -296,7 +268,7 @@ void MainWindow::on_editBtn_clicked()
     else
     {
         EditGasto *editGasto = new EditGasto(this, dbcon);
-        editGasto->populateComboTipo(this->tiposJson);
+        editGasto->populateComboTipo(this->configTypes);
         editGasto->setValuesInPopup(gastosModel->index(index, 0).data().toString(),
                                     gastosModel->index(index, 1).data().toDate(),
                                     gastosModel->index(index, 3).data().toString(),
@@ -340,7 +312,36 @@ void MainWindow::on_deleteCurrentConfigBtn_clicked()
 void MainWindow::on_saveTypeBtn_clicked()
 {
     AddConfig *addConfig = new AddConfig(this);
-    if(addConfig->exec() == 0){}
+    if(addConfig->exec() == 0){
 
+        configTypes.clear();
+        QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+        for (QString type : data2) {
+            configTypes.append(type);
+            qDebug() << type;
+        };
+
+        populateComboTipo();
+        /*
+        for(QString item : configTypes)
+        {
+            ui->comboBox->addItem(item);
+            ui->tipoCbx->addItem(item);
+        }
+        */
+
+        configModel = new ConfigModel(this);
+        configModel->populateData(configTypes);
+        ui->configTable->setModel(configModel);
+        ui->configTable->horizontalHeader()->setVisible(true);
+        ui->configTable->show();
+    }
+
+}
+
+
+void MainWindow::on_comboBox_activated(int index)
+{
+    qDebug() << "Activado: " << index;
 }
 
