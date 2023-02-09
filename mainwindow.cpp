@@ -20,15 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // settings.setValue("DB_PATH", "/home/igorrecio/gitrepos/home_expenses_dsktp/gastosDatabase.db");
-
-    /*
-    QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
-    for (QString type : data2) {
-        qDebug() << type;
-    };
-    */
-
     // Recuperar parametros
     getParams();
 
@@ -72,11 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->filterByCbx->show();
 
     // Preparacion pestaña config
-    configModel = new ConfigModel(this);
-    configModel->populateData(configTypes);
-    ui->configTable->setModel(configModel);
-    ui->configTable->horizontalHeader()->setVisible(true);
-    ui->configTable->show();
+    populateConfigTable();
 
     // La app comienza con datos actualizados de la DB
     on_refreshBtn_clicked();
@@ -109,6 +96,15 @@ void MainWindow::populateComboTipo()
     ui->tipoCbx->setCurrentIndex(0);
     ui->comboBox->show();
     ui->tipoCbx->show();
+}
+
+void MainWindow::populateConfigTable()
+{
+    configModel = new ConfigModel(this);
+    configModel->populateData(configTypes);
+    ui->configTable->setModel(configModel);
+    ui->configTable->horizontalHeader()->setVisible(true);
+    ui->configTable->show();
 }
 
 void MainWindow::on_saveBtn_clicked()
@@ -305,7 +301,46 @@ void MainWindow::on_editConfigBtn_clicked()
 
 void MainWindow::on_deleteCurrentConfigBtn_clicked()
 {
+    int index = ui->configTable->selectionModel()->currentIndex().row();
 
+    if(index < 0)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Seleccione una configuración para eliminar");
+        msgBox.exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(QString("Desea borrar el tipo de gasto %1 ?").arg(configModel->index(index, 0).data().toString()));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        int ret = msgBox.exec();
+
+        switch(ret) {
+            case QMessageBox::Yes:
+                QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+                int eraseIndex = data2.indexOf(configModel->index(index, 0).data().toString());
+                data2.removeAt(eraseIndex);
+                settings.setValue("TYPES", QVariant::fromValue(data2));
+
+                QMessageBox confirmacionPopup;
+                confirmacionPopup.setText("Tipo borrado!");
+                confirmacionPopup.exec();
+                configTypes.clear();
+
+                data2 = settings.value("TYPES").value<QList<QString>>();
+                for (QString type : data2) {
+                    configTypes.append(type);
+                    qDebug() << type;
+                };
+
+                populateComboTipo();
+                populateConfigTable();
+
+                break;
+        }
+    }
 }
 
 
@@ -322,26 +357,7 @@ void MainWindow::on_saveTypeBtn_clicked()
         };
 
         populateComboTipo();
-        /*
-        for(QString item : configTypes)
-        {
-            ui->comboBox->addItem(item);
-            ui->tipoCbx->addItem(item);
-        }
-        */
-
-        configModel = new ConfigModel(this);
-        configModel->populateData(configTypes);
-        ui->configTable->setModel(configModel);
-        ui->configTable->horizontalHeader()->setVisible(true);
-        ui->configTable->show();
+        populateConfigTable();
     }
-
-}
-
-
-void MainWindow::on_comboBox_activated(int index)
-{
-    qDebug() << "Activado: " << index;
 }
 

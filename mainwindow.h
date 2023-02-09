@@ -44,8 +44,6 @@ private slots:
 
     void on_saveTypeBtn_clicked();
 
-    void on_comboBox_activated(int index);
-
 public slots:
     void on_refreshBtn_clicked();
 
@@ -68,5 +66,6 @@ private:
     void openJson(QString path);
     void getParams();
     void populateComboTipo();
+    void populateConfigTable();
 };
 #endif // MAINWINDOW_H
