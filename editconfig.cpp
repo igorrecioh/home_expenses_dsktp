@@ -13,9 +13,8 @@ EditConfig::~EditConfig()
     delete ui;
 }
 
-void EditConfig::SetKeyValue(QString key, QString value)
+void EditConfig::SetValue(QString value)
 {
-    ui->keyLabel->setText(key);
     ui->valueEdit->setText(value);
 }
 

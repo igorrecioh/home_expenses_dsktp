@@ -13,7 +13,7 @@ class EditConfig : public QDialog
 
 public:
     explicit EditConfig(QWidget *parent = nullptr);
-    void SetKeyValue(QString key, QString value);
+    void SetValue(QString value);
     ~EditConfig();
 
 private slots:

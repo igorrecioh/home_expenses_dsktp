@@ -292,7 +292,7 @@ void MainWindow::on_editConfigBtn_clicked()
     else
     {
         EditConfig *editConfig = new EditConfig(this);
-        editConfig->SetKeyValue(configModel->index(index, 0).data().toString(), configModel->index(index, 1).data().toString());
+        editConfig->SetValue(configModel->index(index, 0).data().toString());
         if(editConfig->exec() == 0){
         }
     }
