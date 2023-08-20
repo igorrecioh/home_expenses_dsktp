@@ -8,7 +8,7 @@ DbManager::DbManager(const QString& path)
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName(path);
 
-    if(!m_db.open()){
+    if(!m_db.open() || path == ""){
         qDebug() << "Error: Conexión con DB fallida";
     }
     else {

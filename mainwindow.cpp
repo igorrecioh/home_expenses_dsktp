@@ -6,11 +6,13 @@
 #include <QMessageBox>
 #include <QIODevice>
 #include <QFile>
+#include <QWidget>
 #include "dbmanager.h"
 #include "addconfig.h"
 #include "editgasto.h"
 #include "editconfig.h"
 #include "gastomodel.h"
+#include "setdbpath.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -77,6 +79,21 @@ MainWindow::~MainWindow()
 void MainWindow::getParams()
 {
     dbPath = settings.value("DB_PATH").toString();
+    if (dbPath == "")
+    {
+        qDebug() << "Path to DB not found...";
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Error en base de datos");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Ruta a DB no encontrada!!!");
+        msgBox.exec();
+
+        auto child = ui->tabWidget->findChild<QWidget *>(QString("config"), Qt::FindChildrenRecursively);
+        ui->tabWidget->setCurrentWidget(child);
+    }
+
+    dbPath = settings.value("DB_PATH").toString();
+    ui->dbPathLine->setText(dbPath);
     qDebug() << dbPath;
 
     QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
@@ -84,6 +101,13 @@ void MainWindow::getParams()
         configTypes.append(type);
         qDebug() << type;
     };
+}
+
+void MainWindow::receiveDbPath(const QString &newValue)
+{
+    qDebug() << "Guardando path";
+    settings.setValue("DB_PATH", QVariant::fromValue(newValue));
+    ui->dbPathLine->setText(newValue);
 }
 
 void MainWindow::populateComboTipo()
@@ -298,6 +322,29 @@ void MainWindow::on_editConfigBtn_clicked()
     }
 }
 
+void MainWindow::receiveEditedConfig(const QString &oldValue, const QString &newValue)
+{
+    // Se recibe el valor antiguo y el nuevo
+    QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+
+    // Se busca en la lista el valor antiguo para sustituirlo en ella y en los settings
+    int updateIndex = data2.indexOf(oldValue);
+    data2[updateIndex] = newValue;
+    settings.setValue("TYPES", QVariant::fromValue(data2));
+
+    // Limpiamos y rellenamos la lista de tipos con los nuevos valores
+    data2 = settings.value("TYPES").value<QList<QString>>();
+    configTypes.clear();
+    for (QString type : data2) {
+        configTypes.append(type);
+        qDebug() << type;
+    };
+
+    // Refrescamos los combos
+    populateComboTipo();
+    populateConfigTable();
+}
+
 
 void MainWindow::on_deleteCurrentConfigBtn_clicked()
 {
@@ -358,6 +405,14 @@ void MainWindow::on_saveTypeBtn_clicked()
 
         populateComboTipo();
         populateConfigTable();
+    }
+}
+
+
+void MainWindow::on_setDbPath_clicked()
+{
+    SetDbPath *setDbPath = new SetDbPath(this);
+    if(setDbPath->exec() == 0){
     }
 }
 

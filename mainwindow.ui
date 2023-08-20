@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="addGastoTab">
      <attribute name="title">
@@ -412,7 +412,7 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="config">
      <attribute name="title">
       <string>Configuración</string>
      </attribute>
@@ -422,7 +422,7 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
         <x>210</x>
         <y>10</y>
         <width>351</width>
-        <height>192</height>
+        <height>221</height>
        </rect>
       </property>
      </widget>
@@ -440,7 +440,7 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
 font: 700 10pt &quot;Ubuntu&quot;;</string>
       </property>
       <property name="text">
-       <string>EDITAR VALOR</string>
+       <string>EDITAR TIPO</string>
       </property>
      </widget>
      <widget class="QPushButton" name="saveTypeBtn">
@@ -475,6 +475,41 @@ font: 700 10pt &quot;Ubuntu&quot;;</string>
       </property>
       <property name="text">
        <string>ELIMINAR TIPO</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="setDbPath">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>370</y>
+        <width>151</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(98, 160, 234);
+font: 700 10pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>RUTA DB</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="dbPathLine">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>390</y>
+        <width>541</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

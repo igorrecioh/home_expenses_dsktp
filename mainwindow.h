@@ -44,8 +44,15 @@ private slots:
 
     void on_saveTypeBtn_clicked();
 
+
+    void on_setDbPath_clicked();
+
 public slots:
     void on_refreshBtn_clicked();
+
+    void receiveEditedConfig(const QString &oldValue, const QString &newValue);
+
+    void receiveDbPath(const QString &newValue);
 
 private:
     Ui::MainWindow *ui;
