@@ -54,6 +54,8 @@ public slots:
 
     void receiveDbPath(const QString &newValue);
 
+    void receiveNewType(const QString &newType);
+
 private:
     Ui::MainWindow *ui;
     QList<int> gastoIds;

@@ -21,6 +21,9 @@ private slots:
 
     void on_updateConfigBtn_clicked();
 
+signals:
+    void sendNewType(const QString &newValue);
+
 private:
     Ui::AddConfig *ui;
     QSettings _settings;

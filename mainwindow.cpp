@@ -110,6 +110,25 @@ void MainWindow::receiveDbPath(const QString &newValue)
     ui->dbPathLine->setText(newValue);
 }
 
+void MainWindow::receiveNewType(const QString &newType)
+{
+    qDebug() << "Guardando tipo nuevo";
+    QList<QString> data2 = settings.value("TYPES").value<QList<QString>>();
+    data2.append(newType);
+
+    configTypes.clear();
+    for (QString type : data2) {
+        configTypes.append(type);
+        qDebug() << type;
+    };
+
+    settings.setValue("TYPES", QVariant::fromValue(configTypes));
+
+    // Refrescamos los combos
+    populateComboTipo();
+    populateConfigTable();
+}
+
 void MainWindow::populateComboTipo()
 {
     ui->comboBox->clear();

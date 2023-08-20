@@ -7,6 +7,7 @@ AddConfig::AddConfig(QWidget *parent) :
     _settings("IgorRecio", "gastosApp")
 {
     ui->setupUi(this);
+    connect(this, SIGNAL(sendNewType(QString)), parent, SLOT(receiveNewType(QString)));
 }
 
 AddConfig::~AddConfig()
@@ -23,9 +24,7 @@ void AddConfig::on_cancelConfigAddBtn_clicked()
 
 void AddConfig::on_updateConfigBtn_clicked()
 {
-    QList<QString> data2 = _settings.value("TYPES").value<QList<QString>>();
-    data2.append(ui->valueEdit->text());
-    _settings.setValue("TYPES", QVariant::fromValue(data2));
+    emit sendNewType(ui->valueEdit->text());
     this->close();
     this->setResult(0);
 }

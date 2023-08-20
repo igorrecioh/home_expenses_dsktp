@@ -39,8 +39,8 @@ CREATE TABLE "gastosTable" (
 
 ## Trabajo futuro
 - [ ] Gestión de errores vía popups de aviso
-- [X] Configuración del path de la base de datos desde la propia aplicación (sin necesidad de editar el JSON en crudo)
-- [ ] Configuración de tipos de gasto desde la propia aplicación (sin necesidad de editar el JSON en crudo)
+- [X] Configuración del path de la base de datos desde la propia aplicación
+- [X] Configuración de tipos de gasto desde la propia aplicación
 - [ ] Inclusión de nueva columna en la tabla que indique a qué persona se le asocia el gasto
 - [ ] Adición de una nueva pestaña de reporte (Suma de gastos filtrados, por mes, por persona, por tipo...)
 
