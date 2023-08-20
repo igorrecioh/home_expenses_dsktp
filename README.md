@@ -32,15 +32,15 @@ CREATE TABLE "gastosTable" (
 
 ## Cómo usar la app
 
-- Nuevo fichero para guardar los tipos --> /home/igorrecio/.config/IgorRecio
-- Renombra el fichero ```gastos.json.template``` a ```gastos.json``` y rellena el campo DB_PATH con la ruta completa donde has creado la base de datos.
+- Nuevo fichero generado automáticamente para guardar los tipos de gasto y la ruta del fichero de BD --> $HOME/.config/IgorRecio/gastosApp.conf
 - En la lista TYPES, incluye los tipos de gastos que quieres manejar en la aplicación.
 - Compila la aplicación desde QtCreator y ejecútala
 
 
 ## Trabajo futuro
 - [ ] Gestión de errores vía popups de aviso
-- [ ] Configuración del path de la base de datos y tipos desde la propia aplicación (sin necesidad de editar el JSON en crudo)
+- [X] Configuración del path de la base de datos desde la propia aplicación (sin necesidad de editar el JSON en crudo)
+- [ ] Configuración de tipos de gasto desde la propia aplicación (sin necesidad de editar el JSON en crudo)
 - [ ] Inclusión de nueva columna en la tabla que indique a qué persona se le asocia el gasto
 - [ ] Adición de una nueva pestaña de reporte (Suma de gastos filtrados, por mes, por persona, por tipo...)
 
