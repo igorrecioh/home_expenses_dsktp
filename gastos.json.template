@@ -1,7 +1,0 @@
-{
-    "DB_PATH": "<<PATH AL FICHERO .db>>",
-    "TYPES": ["Hipoteca", "Comunidad", "Garaje",
-              "Luz", "Gas", "Agua", "Alimentación",
-              "Telecomunicaciones", "Hogar", "Combustible",
-              "Peajes", "Impuestos", "Seguros"]
-}
