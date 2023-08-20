@@ -19,8 +19,14 @@ public:
 private slots:
     void on_cancelConfigEditBtn_clicked();
 
+    void on_updateConfigBtn_clicked();
+
+signals:
+    void sendEditedConfig(const QString &oldValue, const QString &newValue);
+
 private:
     Ui::EditConfig *ui;
+    QString _oldConfig;
 };
 
 #endif // EDITCONFIG_H
