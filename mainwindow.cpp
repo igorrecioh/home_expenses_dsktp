@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , dbcon()
-    , settings("IgorRecio", "gastosApp")
+    , settings("GastosApp", "gastosApp")
 {
     ui->setupUi(this);
 
